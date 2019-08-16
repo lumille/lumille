@@ -1,0 +1,25 @@
+{
+    "name": "lumille/lumille",
+    "description": "Minimalist Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frederic KOLLER",
+            "email": "koller.f@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "altorouter/altorouter": "v1.2.0",
+        "eftec/bladeone": "3.31",
+        "fzaninotto/faker": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumille\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    }
+}
