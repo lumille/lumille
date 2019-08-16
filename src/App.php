@@ -3,7 +3,8 @@
 
 namespace Lumille;
 
-use Lumille\Config\Config;
+use Lumille\App\Config;
+use Lumille\App\Session;
 use Lumille\Http\Request;
 use Lumille\Router\Router;
 use Lumille\View\View;
@@ -13,9 +14,11 @@ class App
 
     public function run ()
     {
-        View::boot();
-        $this->loadConfigs();;
-        $this->loadRoutes();;
+        $this->loadConfigs();
+        $this->loadRoutes();
+        Session::init($this->config('session'));
+        Session::start();
+        View::boot($this->getPath('path.view'), $this->getPath('path.cache'));
         Router::boot();;
     }
 
@@ -32,7 +35,7 @@ class App
 
     private function loadRoutes ()
     {
-        $routePath = $this->root() . $this->config('paths.route');
+        $routePath = $this->getPath('path.route');
         $files = array_diff(\scandir($routePath), ['.', '..']);
         foreach ($files as $file) {
             require_once($routePath . $file);
@@ -47,6 +50,16 @@ class App
     public function root ()
     {
         return Request::documentRoot() . '/../';
+    }
+
+    public function getPath($name)
+    {
+        return $this->root() . $this->config($name);
+    }
+
+    public function getLocale()
+    {
+        return $this->config('app.locale');
     }
 
 }

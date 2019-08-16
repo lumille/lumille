@@ -65,6 +65,11 @@ class HashWrapper
         return $result;
     }
 
+    public static function set ($path, $values = null)
+    {
+        static::insert($path, $values);
+    }
+
     public static function remove ($path)
     {
         return Hash::remove(static::$hash, $path);
@@ -100,12 +105,12 @@ class HashWrapper
         return Hash::filter(static::$hash, $callable);
     }
 
-    public static function flatten (string $separator = '.')
+    public static function flatten ($separator = '.')
     {
         return Hash::flatten(static::$hash, $separator);
     }
 
-    public static function expand (string $separator = '.')
+    public static function expand ($separator = '.')
     {
         return Hash::expand(static::$hash, $separator);
     }

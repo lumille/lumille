@@ -16,11 +16,17 @@ class Request extends Singleton
 
     public static function getDomain (): string
     {
-        return sprintf(
+        $port = $_SERVER['SERVER_PORT'];
+        $domain = sprintf(
             "%s://%s",
             static::isSecure() ? 'https' : 'http',
             $_SERVER['SERVER_NAME']
         );
+
+        if ($port) {
+            $domain .= ':' . $port;
+        }
+        return $domain;
     }
 
     public static function getRequestUri (): string

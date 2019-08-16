@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Lumille\Config;
+namespace Lumille\App;
 
 
 use Lumille\Utility\HashWrapper;

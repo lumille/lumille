@@ -1,8 +1,18 @@
 <?php
 
+use Lumille\App\Session;
 use Lumille\Router\Router;
 use Lumille\View\View;
 
+
+if (!function_exists('app')) {
+    function app ()
+    {
+        global $app;
+        return $app;
+    }
+
+}
 if (!function_exists('partial')) {
     function partial($name, array $params = [])
     {
@@ -128,4 +138,22 @@ if (!function_exists('route')) {
         return Router::route($name);
     }
 }
+
+if (!function_exists('session')) {
+    function session($key, $default = null)
+    {
+        return Session::get($key, $default);
+    }
+}
+
+if (!function_exists('session_set')) {
+    function session_set($key, $value = null)
+    {
+        Session::set($key, $value);
+    }
+}
+
+
+
+
 

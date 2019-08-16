@@ -13,9 +13,9 @@ class View
 
     protected static $blade;
 
-    public static function boot ($mode = BladeOne::MODE_AUTO)
+    public static function boot ($views, $cache, $mode = BladeOne::MODE_AUTO)
     {
-        $blade = new BladeOne(VIEWS, CACHE, $mode);
+        $blade = new BladeOne($views, $cache, $mode);
         $blade->setBaseUrl(Request::getDomain());
 
         static::$blade = $blade;
