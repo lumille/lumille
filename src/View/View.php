@@ -6,35 +6,34 @@ namespace Lumille\View;
 
 use eftec\bladeone\BladeOne;
 use Lumille\Http\Request;
-use Lumille\Singleton;
 
 class View
 {
 
-    protected static $blade;
+    protected $blade;
 
-    public static function boot ($views, $cache, $mode = BladeOne::MODE_AUTO)
+    public function __construct ($views, $cache, $mode = BladeOne::MODE_AUTO)
     {
         $blade = new BladeOne($views, $cache, $mode);
         $blade->setBaseUrl(Request::getDomain());
 
-        static::$blade = $blade;
-        return static::$blade;
+        $this->blade = $blade;
+        return $this->blade;
     }
 
-    public static function share ($name, $value = null)
+    public function share ($name, $value = null)
     {
         if (!is_array($name)) {
             $name = [$name => $value];
         }
 
         foreach ($name as $key => $value) {
-            static::$blade->share($key, $value);
+            $this->blade->share($key, $value);
         }
     }
 
-    public static function render($view, array $params = [])
+    public function render($view, array $params = [])
     {
-        return static::$blade->run($view, $params);
+        return $this->blade->run($view, $params);
     }
 }

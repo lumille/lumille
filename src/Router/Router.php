@@ -7,45 +7,45 @@ namespace Lumille\Router;
 use AltoRouter;
 use Lumille\Singleton;
 
-class Router extends Singleton
+class Router
 {
 
-    private static function newRoute ()
+    private function newRoute ()
     {
         return new Route();
     }
 
-    public static function get ($url, $callable, $name = null)
+    public function get ($url, $callable, $name = null)
     {
-        static::newRoute()->get($url, $callable, $name);
+        $this->newRoute()->get($url, $callable, $name);
     }
 
-    public static function post ($url, $callable, $name = null)
+    public function post ($url, $callable, $name = null)
     {
-        static::newRoute()->post($url, $callable, $name);
+        $this->newRoute()->post($url, $callable, $name);
     }
 
-    public static function put ($url, $callable, $name = null)
+    public function put ($url, $callable, $name = null)
     {
-        static::newRoute()->put($url, $callable, $name);
+        $this->newRoute()->put($url, $callable, $name);
     }
 
-    public static function patch ($url, $callable, $name = null)
+    public function patch ($url, $callable, $name = null)
     {
-        static::newRoute()->patch($url, $callable, $name);
+        $this->newRoute()->patch($url, $callable, $name);
     }
 
-    public static function delete ($url, $callable, $name = null)
+    public function delete ($url, $callable, $name = null)
     {
-        static::newRoute()->delete($url, $callable, $name);
+        $this->newRoute()->delete($url, $callable, $name);
     }
 
-    public static function all ($url, $callable, $name)
+    public function all ($url, $callable, $name)
     {
-        static::newRoute()->all($url, $callable, $name);
+        $this->newRoute()->all($url, $callable, $name);
     }
 
-    public static function group ($name, $callback)
+    public function group ($name, $callback)
     {
         $route = new Route();
         $route->setGroup($name);
@@ -53,27 +53,27 @@ class Router extends Singleton
         \call_user_func($callback, $route);
     }
 
-    public static function route($name)
+    public function route($name)
     {
-        $namedRoutes = static::getNamedRoutes();
+        $namedRoutes = $this->getNamedRoutes();
         if (\array_key_exists($name, $namedRoutes)) {
             return $namedRoutes[$name];
         }
     }
 
-    public static function getRoutes ()
+    public function getRoutes ()
     {
         return RouteCollection::getListRoutes();
     }
 
-    public static function getNamedRoutes ()
+    public function getNamedRoutes ()
     {
         return RouteCollection::getListNamedRoutes();
     }
 
-    public static function boot ()
+    public function run ()
     {
-        $methods = static::getRoutes();
+        $methods = $this->getRoutes();
         $router = new AltoRouter();
 
         foreach ($methods as $method => $routes) {

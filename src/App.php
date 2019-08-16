@@ -5,8 +5,8 @@ namespace Lumille;
 
 use Lumille\App\Config;
 use Lumille\App\Session;
+use Lumille\Facades\AliasLoader;
 use Lumille\Http\Request;
-use Lumille\Router\Router;
 use Lumille\View\View;
 
 class App
@@ -15,11 +15,12 @@ class App
     public function run ()
     {
         $this->loadConfigs();
-        $this->loadRoutes();
+        AliasLoader::getInstance($this->config('app.alias'))->register();
         Session::init($this->config('session'));
         Session::start();
-        View::boot($this->getPath('path.view'), $this->getPath('path.cache'));
-        Router::boot();;
+
+        $this->loadRoutes();
+        \Router::run();;
     }
 
     private function loadConfigs ()

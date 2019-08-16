@@ -1,8 +1,7 @@
 <?php
 
 use Lumille\App\Session;
-use Lumille\Router\Router;
-use Lumille\View\View;
+
 
 
 if (!function_exists('app')) {
@@ -51,13 +50,13 @@ if (!function_exists('pageActive')) {
 
 if (!function_exists('blade_share')) {
     function blade_share($name, $value = null) {
-        View::share($name, $value);
+        \View::share($name, $value);
     }
 }
 
 if (!function_exists('render')) {
     function render($view, array $params = []) {
-        echo View::render($view, $params);
+        echo \View::render($view, $params);
     }
 }
 
@@ -135,7 +134,7 @@ if (!function_exists('dd')) {
 if (!function_exists('route')) {
     function route($name)
     {
-        return Router::route($name);
+        return \Router::route($name);
     }
 }
 

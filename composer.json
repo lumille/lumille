@@ -12,7 +12,8 @@
     "require": {
         "altorouter/altorouter": "v1.2.0",
         "eftec/bladeone": "3.31",
-        "fzaninotto/faker": "^1.8"
+        "fzaninotto/faker": "^1.8",
+        "illuminate/support": "^5.8"
     },
     "autoload": {
         "psr-4": {
