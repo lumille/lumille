@@ -22,7 +22,7 @@ class App
         Session::init($this->config('session'));
         Session::start();
 
-        $this->router = new Router($this->config('app.controllerPath'), $_SERVER['REQUEST_URI']);
+        $this->router = new Router($this->config('app.namespace.controller'), $_SERVER['REQUEST_URI']);
         $this->loadRoutes();
 
         try {
@@ -61,32 +61,46 @@ class App
         }
     }
 
+    /**
+     * @param $path
+     * @param null $default
+     * @return mixed
+     */
     public function config($path, $default = null)
     {
         return Config::get($path, $default);
     }
 
+    /**
+     * @return string
+     */
     public function root ()
     {
         return Request::documentRoot() . '/../';
     }
 
+    /**
+     * @param $name
+     * @return string
+     */
     public function getPath($name)
     {
         return $this->root() . $this->config($name);
     }
 
+    /**
+     * @return string
+     */
     public function getLocale()
     {
         return $this->config('app.locale');
     }
 
     /**
-     * @return mixed
+     * @return Router
      */
     public function getRouter ()
     {
         return $this->router;
     }
-
 }

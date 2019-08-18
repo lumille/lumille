@@ -2,23 +2,14 @@
 
 use Lumille\App\Session;
 
-
-
 if (!function_exists('app')) {
     function app ()
     {
         global $app;
         return $app;
     }
+}
 
-}
-if (!function_exists('partial')) {
-    function partial($name, array $params = [])
-    {
-        extract($params);
-        require_once(PARTIALS . $name . '.php');
-    }
-}
 
 if (!function_exists('h')) {
     function h($value)
@@ -128,13 +119,6 @@ if (!function_exists('dd')) {
     {
         dump($data);
         die;
-    }
-}
-
-if (!function_exists('route')) {
-    function route($name)
-    {
-        return \Router::route($name);
     }
 }
 
