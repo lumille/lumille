@@ -10,8 +10,13 @@ use Lumille\View\View;
 
 class ViewFacade extends Facade
 {
+    private static $instance;
+
     protected static function getFacadeAccessor ()
     {
-        return new View(app()->getPath('path.view'), app()->getPath('path.cache'));
+        if (self::$instance === null) {
+            self::$instance = new View(app()->getPath('path.view'), app()->getPath('path.cache'));
+        }
+        return self::$instance;
     }
 }

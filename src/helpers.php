@@ -56,7 +56,7 @@ if (!function_exists('blade_share')) {
 
 if (!function_exists('render')) {
     function render($view, array $params = []) {
-        echo \View::render($view, $params);
+        return \View::render($view, $params);
     }
 }
 

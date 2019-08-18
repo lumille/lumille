@@ -7,10 +7,13 @@ use Lumille\App\Config;
 use Lumille\App\Session;
 use Lumille\Facades\AliasLoader;
 use Lumille\Http\Request;
-use Lumille\View\View;
+use Lumille\Routing\Router;
+use Lumille\Routing\RouterException;
+use Symfony\Component\HttpFoundation\Response;
 
 class App
 {
+    protected $router;
 
     public function run ()
     {
@@ -19,8 +22,22 @@ class App
         Session::init($this->config('session'));
         Session::start();
 
+        $this->router = new Router($this->config('app.controllerPath'), $_SERVER['REQUEST_URI']);
         $this->loadRoutes();
-        \Router::run();;
+
+        try {
+            $html = $this->router->run();
+            $response = new Response($html);
+        } catch (RouterException $e) {
+            $controller = "App\\Controller\\ErrorController";
+            $method = "error404";
+
+            $response = new Response(
+                call_user_func([new $controller, $method]),
+                404);
+        }
+
+        return $response->send();
     }
 
     private function loadConfigs ()
@@ -36,6 +53,7 @@ class App
 
     private function loadRoutes ()
     {
+        $router = $this->router;
         $routePath = $this->getPath('path.route');
         $files = array_diff(\scandir($routePath), ['.', '..']);
         foreach ($files as $file) {
@@ -61,6 +79,14 @@ class App
     public function getLocale()
     {
         return $this->config('app.locale');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRouter ()
+    {
+        return $this->router;
     }
 
 }
