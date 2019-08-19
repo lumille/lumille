@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Lumille\App;
+namespace Lumille\Foundation;
 
 
-use Lumille\Utility\HashWrapper;
+use Lumille\Utility\HashStaticWrapper;
 
-class Session extends HashWrapper
+class Session extends HashStaticWrapper
 {
     static protected $config = [];
 

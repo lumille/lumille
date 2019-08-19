@@ -32,7 +32,7 @@ class View
         }
     }
 
-    public function render($view, array $params = [])
+    public function make($view, array $params = [])
     {
         return $this->blade->run($view, $params);
     }

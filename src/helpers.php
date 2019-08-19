@@ -1,18 +1,33 @@
 <?php
 
-use Lumille\App\Session;
+use Lumille\Foundation\Session;
 
 if (!function_exists('app')) {
-    function app ()
+    function app ($name = null)
     {
         global $app;
+        if ($name) {
+            return $app->getDic($name);
+        }
+
         return $app;
+    }
+}
+
+if (!function_exists('config')) {
+    function config ($name, $value = null)
+    {
+        if ($value) {
+            \Config::insert($name, $value);
+        }
+
+        return \Config::get($name);
     }
 }
 
 
 if (!function_exists('h')) {
-    function h($value)
+    function h ($value)
     {
         return strip_tags($value);
     }
@@ -20,18 +35,18 @@ if (!function_exists('h')) {
 
 
 if (!function_exists('image')) {
-    function image($name)
+    function image ($name)
     {
         return '/images/' . $name;
     }
 }
 
 if (!function_exists('pageActive')) {
-    function pageActive($file)
+    function pageActive ($file)
     {
         $url = $_SERVER['REQUEST_URI'];
 
-        if (preg_match('#'.$file.'#', $url)) {
+        if (preg_match('#' . $file . '#', $url)) {
             return true;
         }
 
@@ -40,14 +55,16 @@ if (!function_exists('pageActive')) {
 }
 
 if (!function_exists('blade_share')) {
-    function blade_share($name, $value = null) {
+    function blade_share ($name, $value = null)
+    {
         \View::share($name, $value);
     }
 }
 
 if (!function_exists('render')) {
-    function render($view, array $params = []) {
-        return \View::render($view, $params);
+    function render ($view, array $params = [])
+    {
+        return \View::make($view, $params);
     }
 }
 
@@ -56,7 +73,7 @@ if (!function_exists('url_back')) {
     function url_back ()
     {
         $currentUrl = $_SERVER['REQUEST_URI'];
-        if (isset($_SERVER['HTTP_REFERER']) && !preg_match("#" . $currentUrl . "#", $_SERVER['HTTP_REFERER']) ) {
+        if (isset($_SERVER['HTTP_REFERER']) && !preg_match("#" . $currentUrl . "#", $_SERVER['HTTP_REFERER'])) {
             return $_SERVER['HTTP_REFERER'];
         }
 
@@ -65,7 +82,7 @@ if (!function_exists('url_back')) {
 }
 
 if (!function_exists('back')) {
-    function back()
+    function back ()
     {
         $url = url_back();
         header('Location: ' . $url);
@@ -74,14 +91,14 @@ if (!function_exists('back')) {
 }
 
 if (!function_exists('current_url')) {
-    function current_url()
+    function current_url ()
     {
         return $_SERVER['REQUEST_URI'];
     }
 }
 
 if (!function_exists('url_query')) {
-    function url_query()
+    function url_query ()
     {
         $stringQuery = $_SERVER['QUERY_STRING'];
         parse_str($stringQuery, $query_array);
@@ -90,7 +107,7 @@ if (!function_exists('url_query')) {
 }
 
 if (!function_exists('url_query_exists')) {
-    function url_query_exists($name)
+    function url_query_exists ($name)
     {
         $query = url_query();
         return array_key_exists($name, $query);
@@ -98,7 +115,7 @@ if (!function_exists('url_query_exists')) {
 }
 
 if (!function_exists('current_url_equal')) {
-    function current_url_equal($name)
+    function current_url_equal ($name)
     {
         var_dump($_SERVER['QUERY_STRING']);
         return current_url() === $name;
@@ -106,7 +123,7 @@ if (!function_exists('current_url_equal')) {
 }
 
 if (!function_exists('dump')) {
-    function dump($data)
+    function dump ($data)
     {
         echo '<pre>';
         var_dump($data);
@@ -115,7 +132,7 @@ if (!function_exists('dump')) {
 }
 
 if (!function_exists('dd')) {
-    function dd($data)
+    function dd ($data)
     {
         dump($data);
         die;
@@ -123,16 +140,36 @@ if (!function_exists('dd')) {
 }
 
 if (!function_exists('session')) {
-    function session($key, $default = null)
+    function session ($key, $default = null)
     {
         return Session::get($key, $default);
     }
 }
 
 if (!function_exists('session_set')) {
-    function session_set($key, $value = null)
+    function session_set ($key, $value = null)
     {
         Session::set($key, $value);
+    }
+}
+
+if (!function_exists('route')) {
+    function route ($name, array $params = [])
+    {
+        global $app;
+        return $app->getRouter()->getUrl($name, $params);
+    }
+}
+
+if (!function_exists('redirect')) {
+    function redirect ($url, $params = [])
+    {
+        if (!preg_match('#^https?:\/\/#', $url)) {
+            $url = route($url, $params) ?? $url;
+        }
+
+        header('Location: ' . $url);
+        exit;
     }
 }
 

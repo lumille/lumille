@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Lumille;
+namespace Lumille\Foundation;
 
-use Lumille\App\Config;
-use Lumille\App\Session;
+use Lumille\Foundation\Config;
+use Lumille\Foundation\Session;
 use Lumille\Facades\AliasLoader;
 use Lumille\Http\Request;
 use Lumille\Routing\Router;
@@ -14,14 +14,27 @@ use Symfony\Component\HttpFoundation\Response;
 class App
 {
     protected $router;
+    private $container;
 
-    public function run ()
+    private $configs;
+
+    private $app;
+
+    private $root;
+
+
+    public function __construct ($root)
     {
-        $this->loadConfigs();
-        AliasLoader::getInstance($this->config('app.alias'))->register();
+        $this->root = $root;
+
+        AliasLoader::getInstance($this->getConfigs()['app']['alias'])->register();
         Session::init($this->config('session'));
         Session::start();
 
+    }
+
+    public function run ()
+    {
         $this->router = new Router($this->config('app.namespace.controller'), $_SERVER['REQUEST_URI']);
         $this->loadRoutes();
 
@@ -40,14 +53,33 @@ class App
         return $response->send();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getConfigs ()
+    {
+        if (empty($this->configs)) {
+            $this->loadConfigs();
+        }
+        return $this->configs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoot ()
+    {
+        return $this->root;
+    }
+
     private function loadConfigs ()
     {
-        $configPath = $this->root() . 'config/';
+        $configPath = $this->getRoot() . '/config/';
         $configs = array_diff(\scandir($configPath), ['.', '..']);
         foreach ($configs as $config) {
             $filename = \pathinfo($config, \PATHINFO_FILENAME);
             $val = require_once($configPath . $config);
-            Config::insert($filename, $val);
+            $this->configs[$filename] = $val;
         }
     }
 
@@ -68,7 +100,7 @@ class App
      */
     public function config($path, $default = null)
     {
-        return Config::get($path, $default);
+        return \Config::get($path, $default);
     }
 
     /**

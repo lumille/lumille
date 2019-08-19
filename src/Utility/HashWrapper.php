@@ -4,134 +4,134 @@
 namespace Lumille\Utility;
 
 
-class HashWrapper
+abstract class HashWrapper
 {
-    protected static $hash = [];
+    protected $hash = [];
 
-    public static function all ()
+    public function all ()
     {
-        return static::$hash;
+        return $this->hash;
     }
 
-    public static function get ($key, $default = null)
+    public function get ($key, $default = null)
     {
-        return Hash::get(static::$hash, $key, $default);
+        return Hash::get($this->hash, $key, $default);
     }
 
-    public static function extract ($path)
+    public function extract ($path)
     {
-        return Hash::extract(static::$hash, $path);
+        return Hash::extract($this->hash, $path);
     }
 
-    public static function combine ($keyPath, $valuePath = null, $groupPath = null)
+    public function combine ($keyPath, $valuePath = null, $groupPath = null)
     {
-        return Hash::combine(static::$hash, $keyPath, $valuePath, $groupPath);
+        return Hash::combine($this->hash, $keyPath, $valuePath, $groupPath);
     }
 
-    public static function format (array $paths, $format)
+    public function format (array $paths, $format)
     {
-        return Hash::format(static::$hash, $paths, $format);
+        return Hash::format($this->hash, $paths, $format);
     }
 
-    public static function check (string $path = null )
+    public function check (string $path = null)
     {
-        return Hash::check(static::$hash, $path);
+        return Hash::check($this->hash, $path);
     }
 
-    public static function map ($path, $callable)
+    public function map ($path, $callable)
     {
-        return Hash::map(static::$hash, $callable);
+        return Hash::map($this->hash, $callable);
     }
 
-    public static function reduce ($path, $callable)
+    public function reduce ($path, $callable)
     {
-        return Hash::reduce(static::$hash, $path, $callable);
+        return Hash::reduce($this->hash, $path, $callable);
     }
 
-    public static function apply ($path, $callable)
+    public function apply ($path, $callable)
     {
-        return Hash::apply(static::$hash, $path, $callable);
+        return Hash::apply($this->hash, $path, $callable);
     }
 
-    public static function sort ($path, $dir, $type = 'regular')
+    public function sort ($path, $dir, $type = 'regular')
     {
-        return Hash::sort(static::$hash, $path, $dir, $type);
+        return Hash::sort($this->hash, $path, $dir, $type);
     }
 
-    public static function insert ($path, $values = null)
+    public function insert ($path, $values = null)
     {
-        $result = Hash::insert(static::$hash, $path, $values);
-        static::$hash = $result;
+        $result = Hash::insert($this->hash, $path, $values);
+        $this->hash = $result;
         return $result;
     }
 
-    public static function set ($path, $values = null)
+    public function set ($path, $values = null)
     {
-        static::insert($path, $values);
+        $this->insert($path, $values);
     }
 
-    public static function remove ($path)
+    public function remove ($path)
     {
-        return Hash::remove(static::$hash, $path);
+        return Hash::remove($this->hash, $path);
     }
 
-    public static function nest (array $options = [])
+    public function nest (array $options = [])
     {
-        return Hash::nest(static::$hash, $options);
+        return Hash::nest($this->hash, $options);
     }
 
-    public static function diff (array $compare)
+    public function diff (array $compare)
     {
-        return Hash::diff(static::$hash, $compare);
+        return Hash::diff($this->hash, $compare);
     }
 
-    public static function mergeDiff (array $compare)
+    public function mergeDiff (array $compare)
     {
-        return Hash::mergeDiff(static::$hash, $compare);
+        return Hash::mergeDiff($this->hash, $compare);
     }
 
-    public static function normalize ($assoc = true)
+    public function normalize ($assoc = true)
     {
-        return Hash::normalize(static::$hash, $assoc);
+        return Hash::normalize($this->hash, $assoc);
     }
 
-    public static function contains (array $needle)
+    public function contains (array $needle)
     {
-        return Hash::contains(static::$hash, $needle);
+        return Hash::contains($this->hash, $needle);
     }
 
-    public static function filter ($callable = ['Hash', 'filter'])
+    public function filter ($callable = ['Hash', 'filter'])
     {
-        return Hash::filter(static::$hash, $callable);
+        return Hash::filter($this->hash, $callable);
     }
 
-    public static function flatten ($separator = '.')
+    public function flatten ($separator = '.')
     {
-        return Hash::flatten(static::$hash, $separator);
+        return Hash::flatten($this->hash, $separator);
     }
 
-    public static function expand ($separator = '.')
+    public function expand ($separator = '.')
     {
-        return Hash::expand(static::$hash, $separator);
+        return Hash::expand($this->hash, $separator);
     }
 
-    public static function merge (array $merge, array $n = [])
+    public function merge (array $merge, array $n = [])
     {
-        return Hash::merge(static::$hash, $merge, $n);
+        return Hash::merge($this->hash, $merge, $n);
     }
 
-    public static function numeric ()
+    public function numeric ()
     {
-        return Hash::numeric(static::$hash);
+        return Hash::numeric($this->hash);
     }
 
-    public static function dimensions ()
+    public function dimensions ()
     {
-        return Hash::dimensions(static::$hash);
+        return Hash::dimensions($this->hash);
     }
 
-    public static function maxDimensions ()
+    public function maxDimensions ()
     {
-        return Hash::maxDimensions(static::$hash);
+        return Hash::maxDimensions($this->hash);
     }
 }

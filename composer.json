@@ -8,13 +8,13 @@
             "email": "koller.f@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "eftec/bladeone": "3.31",
         "fzaninotto/faker": "^1.8",
         "illuminate/support": "^5.8",
         "symfony/http-foundation": "^4.3",
-        "lumille/routing": "*"
+        "lumille/routing": "^0.1",
+        "pimple/pimple": "^3.2"
     },
     "autoload": {
         "psr-4": {
@@ -23,5 +23,15 @@
         "files": [
             "src/helpers.php"
         ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.5"
+        }
+    },
+    "minimum-stability": "dev",
+    "replace": {
+        "lumille/routing": "self.version"
     }
+
 }
