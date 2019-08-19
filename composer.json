@@ -29,9 +29,6 @@
             "dev-master": "0.1.0"
         }
     },
-    "minimum-stability": "dev",
-    "replace": {
-        "lumille/routing": "self.version"
-    }
+    "minimum-stability": "dev"
 
 }
