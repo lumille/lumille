@@ -5,7 +5,6 @@ namespace Lumille\View;
 
 
 use eftec\bladeone\BladeOne;
-use Lumille\Http\Request;
 
 class View
 {
@@ -15,21 +14,15 @@ class View
     public function __construct ($views, $cache, $mode = BladeOne::MODE_AUTO)
     {
         $blade = new BladeOne($views, $cache, $mode);
-        $blade->setBaseUrl(Request::getDomain());
+        $blade->setBaseUrl(\Request::getSchemeAndHttpHost());
 
         $this->blade = $blade;
         return $this->blade;
     }
 
-    public function share ($name, $value = null)
+    public function __call ($name, array $args = [])
     {
-        if (!is_array($name)) {
-            $name = [$name => $value];
-        }
-
-        foreach ($name as $key => $value) {
-            $this->blade->share($key, $value);
-        }
+        return \call_user_func_array([$this->blade, $name], $args);
     }
 
     public function make($view, array $params = [])
