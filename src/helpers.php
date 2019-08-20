@@ -64,7 +64,9 @@ if (!function_exists('blade_share')) {
 if (!function_exists('render')) {
     function render ($view, array $params = [])
     {
-        return \View::make($view, $params);
+        $render = \View::make($view, $params);
+        return \Response::setHeaders('Content-type', 'text/html')
+            ->setContent($render);
     }
 }
 
