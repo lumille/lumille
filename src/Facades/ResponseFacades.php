@@ -4,10 +4,10 @@
 namespace Lumille\Facades;
 
 
-class RequestFacades extends Facade
+class ResponseFacades extends Facade
 {
     public static function getFacadeAccessor ()
     {
-        return 'request';
+        return 'response';
     }
 }

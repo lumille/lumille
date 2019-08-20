@@ -5,37 +5,74 @@ namespace Lumille\Http;
 
 
 use Lumille\Singleton;
+use Symfony\Component\HttpFoundation\Request as FoundationRequest;
 
-class Request extends Singleton
+class Request
 {
 
-    public static function isSecure (): bool
+    private $request;
+
+    public function __construct ()
     {
-        return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+        $this->request = FoundationRequest::createFromGlobals();
     }
 
-    public static function getDomain (): string
+    public function __get ($prop)
     {
-        $port = $_SERVER['SERVER_PORT'];
-        $domain = sprintf(
-            "%s://%s",
-            static::isSecure() ? 'https' : 'http',
-            $_SERVER['SERVER_NAME']
-        );
+        return $this->request->$prop;
+    }
 
-        if ($port) {
-            $domain .= ':' . $port;
+    public function __set ($prop, $value)
+    {
+        $this->request->$prop = $value;
+        return $this->request;
+    }
+
+    public function __call ($name, array $args = [])
+    {
+        return \call_user_func_array([$this->request, $name], $args);
+    }
+
+    private function getProperty ($property, $name = null, $default = null)
+    {
+        if ($name) {
+            return $this->$property->get($name, $default);
         }
-        return $domain;
+        return $this->request->$property;
     }
 
-    public static function getRequestUri (): string
+    public function getQuery ($name = null, $default = null)
     {
-        return static::getDomain() . $_SERVER['REQUEST_URI'];
+        return $this->getProperty('query', $name, $default);
     }
 
-    public static function documentRoot () :string
+    public function getRequest ($name = null, $default = null)
     {
-        return $_SERVER['DOCUMENT_ROOT'];
+        return $this->getProperty('request', $name, $default);
+    }
+
+    public function getCookies ($name = null, $default = null)
+    {
+        return $this->getProperty('cookies', $name, $default);
+    }
+
+    public function getAttributes ($name = null, $default = null)
+    {
+        return $this->getProperty('attributes', $name, $default);
+    }
+
+    public function getFiles ($name = null, $default = null)
+    {
+        return $this->getProperty('files', $name, $default);
+    }
+
+    public function getServer ($name = null, $default = null)
+    {
+        return $this->getProperty('server', $name, $default);
+    }
+
+    public function getHeaders ($name = null, $default = null)
+    {
+        return $this->getProperty('headers', $name, $default);
     }
 }
