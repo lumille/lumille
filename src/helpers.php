@@ -57,7 +57,13 @@ if (!function_exists('pageActive')) {
 if (!function_exists('blade_share')) {
     function blade_share ($name, $value = null)
     {
-        \View::share($name, $value);
+        if (!is_array($name)) {
+            $name = [$name => $value];
+        }
+
+        foreach ($name as $k => $v) {
+            \View::share($k, $v);
+        }
     }
 }
 
