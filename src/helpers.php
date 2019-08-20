@@ -130,23 +130,6 @@ if (!function_exists('current_url_equal')) {
     }
 }
 
-if (!function_exists('dump')) {
-    function dump ($data)
-    {
-        echo '<pre>';
-        var_dump($data);
-        echo '</pre>';
-    }
-}
-
-if (!function_exists('dd')) {
-    function dd ($data)
-    {
-        dump($data);
-        die;
-    }
-}
-
 if (!function_exists('session')) {
     function session ($key, $default = null)
     {
