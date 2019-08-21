@@ -33,6 +33,11 @@ class Request
         return \call_user_func_array([$this->request, $name], $args);
     }
 
+    public function getOriginal ()
+    {
+        return $this->request;
+    }
+
     private function getProperty ($property, $name = null, $default = null)
     {
         if ($name) {
