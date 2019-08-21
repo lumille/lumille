@@ -14,14 +14,24 @@ class Scan
         'file' => 2
     ];
 
-    public static function dir ($path,  $onlyExtensions = null)
+    public static function dir ($path,  $onlyExtensions = null, $excludeExtensions = null)
     {
 
         if (!\file_exists($path)) {
             throw new ScanException("Path not found", self::$codes['dir']);
         }
 
-        $files = array_diff(\scandir($path), ['.', '..']);
+        $defaultExcludeExtensions = ['.', '..'];
+
+        if ($excludeExtensions) {
+            if (!is_array($excludeExtensions)) {
+                $excludeExtensions = [$excludeExtensions];
+            }
+
+            $defaultExcludeExtensions += $excludeExtensions;
+        }
+
+        $files = array_diff(\scandir($path), $defaultExcludeExtensions);
 
         if ( $onlyExtensions) {
 
