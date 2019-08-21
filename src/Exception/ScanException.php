@@ -4,7 +4,7 @@
 namespace Lumille\Exception;
 
 
-class ScanException
+class ScanException extends AppException
 {
 
 }
