@@ -14,7 +14,7 @@ class Scan
         'file' => 2
     ];
 
-    public static function dir ($path,  $onlyExtensions = null, $excludeExtensions = null)
+    public static function dir ($path, $onlyExtensions = null, $removeFiles = null)
     {
 
         if (!\file_exists($path)) {
@@ -23,12 +23,12 @@ class Scan
 
         $defaultExcludeExtensions = ['.', '..'];
 
-        if ($excludeExtensions) {
-            if (!is_array($excludeExtensions)) {
-                $excludeExtensions = [$excludeExtensions];
+        if ($removeFiles) {
+            if (!is_array($removeFiles)) {
+                $removeFiles = [$removeFiles];
             }
 
-            $defaultExcludeExtensions += $excludeExtensions;
+            $defaultExcludeExtensions = \array_merge($defaultExcludeExtensions, $removeFiles);
         }
 
         $files = array_diff(\scandir($path), $defaultExcludeExtensions);
