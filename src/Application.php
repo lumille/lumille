@@ -9,6 +9,7 @@ use Lumille\Foundation\Container;
 use Lumille\Http\Request;
 use Lumille\Routing\RouterException;
 use Lumille\Utility\Reflection;
+use Lumille\Utility\Scan;
 use Symfony\Component\HttpFoundation\Response;
 
 class Application
@@ -68,12 +69,18 @@ class Application
     private function loadConfigs ()
     {
         $configPath = $this->getRootDir() . '/config/';
-        $configs = array_diff(\scandir($configPath), ['.', '..']);
+        $configs = $this->scanDir($configPath, 'php');
         foreach ($configs as $config) {
             $filename = \pathinfo($config, \PATHINFO_FILENAME);
             $val = require_once($configPath . $config);
             $this->configs[$filename] = $val;
         }
+    }
+
+
+    private function scanDir ($path,  $onlyExtensions = null)
+    {
+        return Scan::dir($path, $onlyExtensions);
     }
 
     /**
@@ -177,7 +184,8 @@ class Application
     private function loadRoutes ()
     {
         $routePath = $this->getPath('path.route');
-        $files = array_diff(\scandir($routePath), ['.', '..']);
+        $files = $this->scanDir($routePath, 'php');
+
         foreach ($files as $file) {
             require_once($routePath . $file);
         }
