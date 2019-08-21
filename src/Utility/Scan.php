@@ -49,6 +49,6 @@ class Scan
             }
         }
 
-        return $files;
+        return array_values($files);
     }
 }
