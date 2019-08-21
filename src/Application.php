@@ -10,6 +10,7 @@ use Lumille\Http\Request;
 use Lumille\Routing\RouterException;
 use Lumille\Utility\Reflection;
 use Lumille\Utility\Scan;
+use PHPUnit\Runner\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class Application
@@ -141,17 +142,17 @@ class Application
 
             $response = \call_user_func_array($callable, $args);
 
-            if (!($response instanceof Response)) {
-                $response = \Response::setHeaders('Content-Type', 'application/json')
-                    ->setContent($response);
-            }
-
-        } catch (RouterException $e) {
+        } catch (\Exception $e) {
             $controller = "App\\Controller\\ErrorController";
             $method = "error404";
 
             $response = call_user_func([new $controller, $method]);
             $response->setStatusCode(404);
+        }
+
+        if (!($response instanceof Response)) {
+            $response = \Response::setHeaders('Content-Type', 'application/json')
+                ->setContent($response);
         }
 
         return $response->send();
