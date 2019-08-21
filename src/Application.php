@@ -127,9 +127,8 @@ class Application
 
             $args = [];
             foreach ($params as $param) {
-                $name = $param->getName();
-                if (isset($_args[$name])) {
-                    $args[$name] = $_args[$name];
+                if (isset($_args[$param])) {
+                    $args[$param] = $_args[$param];
                 }
             }
 
