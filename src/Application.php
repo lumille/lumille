@@ -8,6 +8,7 @@ use Lumille\Facades\AliasLoader;
 use Lumille\Foundation\Container;
 use Lumille\Http\Request;
 use Lumille\Routing\RouterException;
+use Lumille\Utility\Reflection;
 use Symfony\Component\HttpFoundation\Response;
 
 class Application
@@ -113,7 +114,25 @@ class Application
         $this->boot();
 
         try {
-            list($callable, $args) = \Route::run();
+            list($callable, $_args) = \Route::run();
+
+            if (!\is_callable($callable)) {
+                @list($controller, $method) = explode('::', $callable);
+                $controller = \Config::get('app.namespaces.controller') . $controller;
+                $controller = new $controller;
+                $callable = [$controller, $method];
+            }
+
+            $params = Reflection::parseAgrs($callable);
+
+            $args = [];
+            foreach ($params as $param) {
+                $name = $param->getName();
+                if (isset($_args[$name])) {
+                    $args[$name] = $_args[$name];
+                }
+            }
+
             $response = \call_user_func_array($callable, $args);
 
             if (!($response instanceof Response)) {
